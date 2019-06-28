@@ -8,13 +8,33 @@
 
 // Hier komen alle functies die te maken hebben met een palindroom
 // palindroom = woord omdraaien
+//$obj = new Palindroom();
+//$obj->revertWord("Klas1G");
+//echo $obj->getRevertWord();
 
-function revertWord($tekst){
-    $revertTekst = "";
-    // we gebruiken een for omdat we de rangeomvang kennen.
-    for ($index = strlen($tekst) - 1 ; $index > -1 ; $index --){
-        $revertTekst = $revertTekst . $tekst[$index];
+include_once '../integration/DbHandler.php';
+class Palindroom{
+    private $tekst;
+    private $revertTekst;
+
+    function revertWord($tekst){
+        $this->tekst = $tekst;
+        $revertTekst = "";
+        // we gebruiken een for omdat we de rangeomvang kennen.
+        for ($index = strlen($tekst) - 1 ; $index > -1 ; $index --){
+            $revertTekst = $revertTekst . $tekst[$index];
+        }
+        $this->revertTekst= $revertTekst;
     }
-    return $revertTekst;
+    
+    function getRevertWord(){
+        return $this->revertTekst;
+    }
+    
+    function heeftPalindroomBetekenis(){
+        $dbHandler = new DbHandler();
+        $dbHandler->findWoord($this->revertTekst);
+        return $dbHandler->isWoordGevonden();
+    }
 }
 
